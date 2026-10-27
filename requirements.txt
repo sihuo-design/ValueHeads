@@ -1,0 +1,15 @@
+torch>=2.1
+transformers>=4.51
+datasets>=4.0
+accelerate
+numpy
+pandas
+scikit-learn
+scipy
+openai>=1.0
+peft>=0.10
+tqdm
+matplotlib
+seaborn
+# LLM judge server (can be installed in a separate environment)
+vllm
