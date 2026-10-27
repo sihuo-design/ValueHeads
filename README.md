@@ -89,31 +89,6 @@ both scored for harmlessness; `honesty` (the held-out 20% of TruthfulQA question
 values, the directions of a shared head are combined as `sum_k lambda_k dir_k`
 ([valueheads/directions.py](valueheads/directions.py)).
 
-## Reproducing the paper
-
-| Paper | Command |
-|---|---|
-| Fig. 2, 5–9 (head heatmaps) | `python analysis/plot_head_heatmaps.py --model <model>` |
-| Fig. 10 (cross-model correlation) | `python analysis/value_correlations.py across-models` |
-| Fig. 11 (cross-value correlation) | `python analysis/value_correlations.py across-values` |
-| Table 17, Fig. 12 (direction angles) | `python analysis/direction_angles.py` |
-| Fig. 3 (masking ratio) | `mask_heads.py --ratio {0.05,0.1,0.15,0.2,0.25,0.3}` |
-| Table 1 (masking) | `mask_heads.py --select topk` / `--select random --seed {0..4}` |
-| Table 12 (significance) | `python analysis/significance.py` (on `results/mask/summary.csv`) |
-| Fig. 4 (cross-value masking) | `mask_heads.py --eval_set <B> --head_value <A>` |
-| Table 2, 10, 13 (single-value) | `steer.py --values <v> --eval_set <set> --alpha {0.3,0.5,1.0}` |
-| Table 3, 11, 14 (multi-value) | `steer.py --values <all six> --eval_set {beavertails,hh-rlhf}` |
-| Appendix I, Table 16 (robustness) | add `--temperature 1.0 --seed {0..4}` to `steer.py` / baselines (top-p 0.9 sampling) |
-| Table 4, 15 (vs. baselines) | `steer.py --values harmless honesty helpfulness --eval_set {hh-rlhf,beavertails}`<br>`python baselines/modpo.py --model <model>`<br>`python baselines/mopft.py --model <model>` |
-
-Generation is greedy, with 128 new tokens and no chat template. The prompt is
-`"\nAnswer question:\n{question}\n"`. The judge prompts are in
-[valueheads/judge.py](valueheads/judge.py) (Appendix E).
-
-**Disk space.** Activations are stored as float16 arrays of shape `(N, layers, hidden)`. The
-HH-RLHF train split (~99k texts) needs roughly 25–30 GB per 8B model. Pass
-`--max_samples` to `extract_activations.py` to subsample it.
-
 ## Repository layout
 
 ```
